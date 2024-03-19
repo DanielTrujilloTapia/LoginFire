@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "619183688399",
+    "project_id": "login-6d028",
+    "storage_bucket": "login-6d028.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:619183688399:android:c9aa52c746d24509df45ba",
+        "android_client_info": {
+          "package_name": "mx.edu.utttt.loginfire"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAK93TdV632QqTmmcqqBuDMjpM8IQLQtWI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
