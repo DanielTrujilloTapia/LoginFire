@@ -10,8 +10,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import mx.edu.utttt.loginfire.navigation.AppNavigation
 import mx.edu.utttt.loginfire.screen.LoginScreen
 import mx.edu.utttt.loginfire.screen.LoginViewModel
+import mx.edu.utttt.loginfire.screen.RegisterScreen
+import mx.edu.utttt.loginfire.screen.RegisterViewModel
 import mx.edu.utttt.loginfire.ui.theme.LoginFireTheme
 
 class MainActivity : ComponentActivity() {
@@ -24,7 +27,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    LoginScreen(LoginViewModel())
+                    AppNavigation()
                 }
             }
         }
