@@ -35,7 +35,8 @@ import mx.edu.utttt.loginfire.model.UserRepository
 fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
     Box(modifier = Modifier
         .fillMaxSize()
-        .padding(16.dp)){
+        .padding(16.dp)
+    ){
         Login(Modifier.align(Alignment.Center), viewModel = viewModel, UserRepository(), navController)
     }
 }
@@ -82,7 +83,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, login: UserRepository, 
             ) {
                 try {
                     scope.launch {
-                        login.login(email, password)
+                        login.login(email, password, navController)
                     }
                 } catch (e: Exception) {
                     Log.e("UserLogin", "Error en el inicio de sesion", e)

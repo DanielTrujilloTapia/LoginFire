@@ -11,6 +11,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import mx.edu.utttt.loginfire.screen.LoginScreen
 import mx.edu.utttt.loginfire.screen.LoginViewModel
+import mx.edu.utttt.loginfire.screen.MainScreen
 import mx.edu.utttt.loginfire.screen.RegisterScreen
 import mx.edu.utttt.loginfire.screen.RegisterViewModel
 
@@ -23,7 +24,8 @@ fun AppNavigation(){
     ) {
         NavHost(navController = navController, startDestination = "login") {
             composable("login") { LoginScreen(LoginViewModel(), navController) }
-            composable("signup") { RegisterScreen(viewModel = RegisterViewModel()) }
+            composable("signup") { RegisterScreen(viewModel = RegisterViewModel(), navController) }
+            composable("main") { MainScreen() }
         }
     }
 }

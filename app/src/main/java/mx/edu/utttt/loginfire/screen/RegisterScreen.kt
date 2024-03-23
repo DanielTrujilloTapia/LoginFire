@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import kotlinx.coroutines.launch
 import mx.edu.utttt.loginfire.R
 import mx.edu.utttt.loginfire.components.DatePickerField
@@ -34,21 +35,21 @@ import mx.edu.utttt.loginfire.model.UserRepository
 import java.time.LocalDate
 
 @Composable
-fun RegisterScreen(viewModel: RegisterViewModel) {
+fun RegisterScreen(viewModel: RegisterViewModel, navController: NavController) {
     Box(modifier = Modifier
         .fillMaxSize()
         .padding(16.dp)
     ){
         LazyColumn {
             item{
-                Register(Modifier.align(Alignment.Center), viewModel, UserRepository())
+                Register(Modifier.align(Alignment.Center), viewModel, UserRepository(), navController)
             }
         }
     }
 }
 
 @Composable
-fun Register(modifier: Modifier, viewModel: RegisterViewModel, createUser: UserRepository) {
+fun Register(modifier: Modifier, viewModel: RegisterViewModel, createUser: UserRepository, navController: NavController) {
     // Variables ViewModel
     val email: String by viewModel.email.observeAsState(initial = "")
     val password: String by viewModel.password.observeAsState(initial = "")
@@ -195,7 +196,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, createUser: UserR
             ) {
                 scope.launch {
                     try {
-                        createUser.createUser(email, password, name, lastname, address, municipality, postalCode, sex, electorKey, curp, birthdate)
+                        createUser.createUser(email, password, name, lastname, address, municipality, postalCode, sex, electorKey, curp, birthdate, navController)
                     } catch (e: Exception) {
                         Log.e("UserCreation", "Error creating user", e)
                     }

@@ -1,6 +1,7 @@
 package mx.edu.utttt.loginfire.model
 
 import android.util.Log
+import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
@@ -12,8 +13,6 @@ import java.time.format.DateTimeFormatter
 class UserRepository {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
-    private val registerViewModel = RegisterViewModel()
-    private val loginViewModel = LoginViewModel()
 
     suspend fun createUser(
         email: String,
@@ -26,7 +25,8 @@ class UserRepository {
         sex: String,
         electorKey: String,
         curp: String,
-        birthdate: LocalDate
+        birthdate: LocalDate,
+        navController: NavController
     ) {
         try {
             // Crear usuario con FirebaseAuth
@@ -56,6 +56,9 @@ class UserRepository {
             // Guardar los datos del usuario en Firestore
             db.collection("users").document(userId).set(usuario).await()
 
+            navController.navigate("main") {
+                popUpTo("login") { inclusive = true }
+            }
         } catch (e: Exception) {
             throw Exception("Error creating user: ${e.message}")
         }
@@ -64,12 +67,15 @@ class UserRepository {
     suspend fun login(
         email: String,
         password: String,
+        navController: NavController
     ) {
         try {
             val authResult = auth.signInWithEmailAndPassword(email, password).await()
             val user = authResult.user
             if (user != null && user.isEmailVerified) {
-                Log.d("Login", "Login exitoso")
+                navController.navigate("main") {
+                    popUpTo("login") { inclusive = true }
+                }
             } else {
                 Log.d("Login", "El correo no esta verificado")
             }
