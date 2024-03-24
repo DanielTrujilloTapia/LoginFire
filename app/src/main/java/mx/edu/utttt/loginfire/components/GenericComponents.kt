@@ -3,6 +3,7 @@ package mx.edu.utttt.loginfire.components
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -10,6 +11,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -39,13 +41,14 @@ fun TextFieldGeneric(
     keyboardType: KeyboardType,
     placeholder: String,
     visualTransformation: VisualTransformation,
-    action: ImeAction
+    action: ImeAction,
+    errorMessage: String? = null,
 ){
     OutlinedTextField(
         value = value,
-        onValueChange = {onTextFieldChange(it)},
+        onValueChange = { onTextFieldChange(it) },
         modifier = Modifier.fillMaxWidth(),
-        placeholder = { Text(text = placeholder)},
+        placeholder = { Text(text = placeholder) },
         keyboardOptions = KeyboardOptions.Default.copy(
             keyboardType = keyboardType,
             imeAction = action
@@ -56,7 +59,16 @@ fun TextFieldGeneric(
             Icon(painter = painterResource, contentDescription = "")
         },
         visualTransformation = visualTransformation,
+        isError = errorMessage!= null,
     )
+    if (errorMessage != null) {
+        Text(
+            text = errorMessage,
+            color = MaterialTheme.colorScheme.error,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+        )
+    }
 }
 
 @Composable
@@ -91,7 +103,6 @@ fun GenericButton(
     painterResource: Painter,
     backColor: Color,
     color: Color,
-    buttonEnable: Boolean,
     onClick: () -> Unit
 ){
     // Botón con borde delgado y esquinas redondeadas
@@ -103,13 +114,12 @@ fun GenericButton(
             containerColor = backColor,  // Color de fondo del botón
             disabledContainerColor = Color.LightGray,
             disabledContentColor = Color.White
-        ),
-        enabled = buttonEnable
+        )
     ) {
         // Icono del botón
         Icon(painter = painterResource, contentDescription = "")
         // Espaciador horizontal
-        Spacer(modifier = Modifier.width(2.dp))
+        Spacer(modifier = Modifier.width(3.dp))
         // Texto del botón
         Text(text = name)
     }
@@ -122,7 +132,8 @@ fun PasswordTextField(
     painterResource: Painter,
     keyboardType: KeyboardType,
     placeholder: String,
-    action: ImeAction
+    action: ImeAction,
+    errorMessage: String? = null
 ) {
     var passwordVisible by remember { mutableStateOf(false) }
 
@@ -140,6 +151,7 @@ fun PasswordTextField(
         leadingIcon = {
             Icon(painter = painterResource, contentDescription = "")
         },
+        isError = errorMessage!= null,
         visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
         trailingIcon = {
             IconButton(onClick = { passwordVisible = !passwordVisible }) {
@@ -147,4 +159,12 @@ fun PasswordTextField(
             }
         }
     )
+    if (errorMessage != null) {
+        Text(
+            text = errorMessage,
+            color = MaterialTheme.colorScheme.error,
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+        )
+    }
 }

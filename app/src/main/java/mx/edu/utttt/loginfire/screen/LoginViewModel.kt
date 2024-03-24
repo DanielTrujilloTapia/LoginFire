@@ -1,13 +1,23 @@
 package mx.edu.utttt.loginfire.screen
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.delay
-import mx.edu.utttt.loginfire.helpers.Validations.isValidEmail
-import mx.edu.utttt.loginfire.helpers.Validations.isValidPassword
+import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavController
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+import mx.edu.utttt.loginfire.model.UserRepository
+import mx.edu.utttt.loginfire.useCase.Validations
+import java.time.LocalDate
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(
+    private val validations: Validations = Validations(),
+    private val navController: NavController
+) : ViewModel() {
+    private val user = UserRepository()
     // Valores para para email
     private val _email = MutableLiveData<String>()
     val email: LiveData<String> = _email
@@ -16,13 +26,51 @@ class LoginViewModel : ViewModel() {
     private val _password = MutableLiveData<String>()
     val password: LiveData<String> = _password
 
-    // Valores para loginEnabled
-    private val _loginEnabled = MutableLiveData<Boolean>()
-    val loginEnabled: LiveData<Boolean> = _loginEnabled
+    // Definiciones para errores
+    private val _emailError = MutableLiveData<String?>()
+    val emailError: LiveData<String?> = _emailError
 
-    fun onLoginChanged(email: String, password: String) {
-        _email.value = email
-        _password.value = password
-        _loginEnabled.value = isValidEmail(email) && isValidPassword(password)
+    private val _passwordError = MutableLiveData<String?>()
+    val passwordError: LiveData<String?> = _passwordError
+
+    fun onEvent(event: LoginFormEvent) {
+        when (event) {
+            is LoginFormEvent.EmailChanged -> {
+                _email.value = event.email
+            }
+            is LoginFormEvent.PasswordChanged -> {
+                _password.value = event.password
+            }
+            is LoginFormEvent.Submit -> {
+                validateAllFields()
+            }
+        }
+    }
+
+    private fun validateAllFields() {
+        val emailResult = validations.validateEmail(_email.value ?: "")
+        val passwordResult = validations.validateStrongPassword(_password.value ?: "")
+
+        val hasError = listOf(
+            emailResult,
+            passwordResult,
+        ). any { !it.successful }
+
+        if (hasError){
+            _emailError.value = emailResult.errorMessage
+            _passwordError.value = passwordResult.errorMessage
+            return
+        }
+        viewModelScope.launch {
+            try {
+                user.login(
+                    _email.value ?: "",
+                    _password.value ?: "",
+                    navController
+                )
+            } catch (e: Exception) {
+                Log.e("UserLogin", "Error en el inicio de sesion", e)
+            }
+        }
     }
 }

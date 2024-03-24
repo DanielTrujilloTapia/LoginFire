@@ -25,7 +25,7 @@ class UserRepository {
         sex: String,
         electorKey: String,
         curp: String,
-        birthdate: LocalDate,
+        birthdate: String,
         navController: NavController
     ) {
         try {
@@ -34,10 +34,6 @@ class UserRepository {
             val userId = userResult.user?.uid ?: throw Exception("User ID is null")
             val sendVerification = userResult.user!!
             sendVerification.sendEmailVerification().await()
-
-            // Formatear la fecha de nacimiento a un String
-            val formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd")
-            val birthdateStr = birthdate.format(formatter)
 
             // Preparar los datos del usuario para guardar en Firestore
             val usuario = hashMapOf(
@@ -50,14 +46,14 @@ class UserRepository {
                 "sex" to sex,
                 "electorKey" to electorKey,
                 "curp" to curp,
-                "birthdate" to birthdateStr
+                "birthdate" to birthdate
             )
 
             // Guardar los datos del usuario en Firestore
             db.collection("users").document(userId).set(usuario).await()
 
-            navController.navigate("main") {
-                popUpTo("login") { inclusive = true }
+            navController.navigate("login") {
+                popUpTo("signup") { inclusive = true }
             }
         } catch (e: Exception) {
             throw Exception("Error creating user: ${e.message}")
