@@ -1,6 +1,9 @@
 package mx.edu.utttt.loginfire.screen
 
+import android.app.Application
+import android.content.Context
 import android.util.Log
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -33,7 +36,7 @@ class LoginViewModel(
     private val _passwordError = MutableLiveData<String?>()
     val passwordError: LiveData<String?> = _passwordError
 
-    fun onEvent(event: LoginFormEvent) {
+    fun onEvent(event: LoginFormEvent, context: Context) {
         when (event) {
             is LoginFormEvent.EmailChanged -> {
                 _email.value = event.email
@@ -42,12 +45,12 @@ class LoginViewModel(
                 _password.value = event.password
             }
             is LoginFormEvent.Submit -> {
-                validateAllFields()
+                validateAllFields(context)
             }
         }
     }
 
-    private fun validateAllFields() {
+    private fun validateAllFields(context: Context) {
         val emailResult = validations.validateEmail(_email.value ?: "")
         val passwordResult = validations.validateStrongPassword(_password.value ?: "")
 
@@ -66,7 +69,8 @@ class LoginViewModel(
                 user.login(
                     _email.value ?: "",
                     _password.value ?: "",
-                    navController
+                    navController,
+                    context
                 )
             } catch (e: Exception) {
                 Log.e("UserLogin", "Error en el inicio de sesion", e)

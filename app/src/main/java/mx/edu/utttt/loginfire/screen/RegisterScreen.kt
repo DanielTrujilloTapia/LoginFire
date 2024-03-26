@@ -91,7 +91,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
         //Email
         TextFieldGeneric(
             value = email,
-            onTextFieldChange = { viewModel.onEvent(RegisterFormEvent.EmailChanged(it)) },
+            onTextFieldChange = { viewModel.onEvent(RegisterFormEvent.EmailChanged(it), context) },
             painterResource = painterResource(id = R.drawable.email),
             keyboardType = KeyboardType.Email,
             placeholder = "Email",
@@ -103,7 +103,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
         //Password
         PasswordTextField(
             value = password,
-            onTextFieldChange = { viewModel.onEvent(RegisterFormEvent.PasswordChanged(it)) },
+            onTextFieldChange = { viewModel.onEvent(RegisterFormEvent.PasswordChanged(it), context) },
             painterResource = painterResource(id = R.drawable.lock),
             keyboardType = KeyboardType.Password,
             placeholder = "Contraseña",
@@ -113,7 +113,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
         Spacer(modifier = Modifier.height(10.dp))
         PasswordTextField(
             value = repeatedPassword,
-            onTextFieldChange = { viewModel.onEvent(RegisterFormEvent.RepeatedPasswordChanged(it)) },
+            onTextFieldChange = { viewModel.onEvent(RegisterFormEvent.RepeatedPasswordChanged(it), context) },
             painterResource = painterResource(id = R.drawable.lock),
             keyboardType = KeyboardType.Password,
             placeholder = "Confirmar Contraseña",
@@ -123,7 +123,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
         Spacer(modifier = Modifier.height(10.dp))
         TextFieldGeneric(
             value = name,
-            onTextFieldChange = { viewModel.onEvent(RegisterFormEvent.NameChanged(it)) },
+            onTextFieldChange = { viewModel.onEvent(RegisterFormEvent.NameChanged(it), context) },
             painterResource = painterResource(id = R.drawable.person),
             keyboardType = KeyboardType.Text,
             placeholder = "Nombre",
@@ -134,7 +134,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
         Spacer(modifier = Modifier.height(10.dp))
         TextFieldGeneric(
             value = lastname,
-            onTextFieldChange = { viewModel.onEvent(RegisterFormEvent.LastnameChanged(it)) },
+            onTextFieldChange = { viewModel.onEvent(RegisterFormEvent.LastnameChanged(it), context) },
             painterResource = painterResource(id = R.drawable.person),
             keyboardType = KeyboardType.Text,
             placeholder = "Apellidos",
@@ -145,7 +145,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
         Spacer(modifier = Modifier.height(10.dp))
         TextFieldGeneric(
             value = address,
-            onTextFieldChange = { viewModel.onEvent(RegisterFormEvent.AddressChanged(it)) },
+            onTextFieldChange = { viewModel.onEvent(RegisterFormEvent.AddressChanged(it), context) },
             painterResource = painterResource(id = R.drawable.location),
             keyboardType = KeyboardType.Text,
             placeholder = "Domicilio",
@@ -156,7 +156,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
         Spacer(modifier = Modifier.height(10.dp))
         TextFieldGeneric(
             value = municipality,
-            onTextFieldChange = { viewModel.onEvent(RegisterFormEvent.MunicipalityChanged(it)) },
+            onTextFieldChange = { viewModel.onEvent(RegisterFormEvent.MunicipalityChanged(it), context) },
             painterResource = painterResource(id = R.drawable.location),
             keyboardType = KeyboardType.Text,
             placeholder = "Municipio",
@@ -167,7 +167,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
         Spacer(modifier = Modifier.height(10.dp))
         TextFieldGeneric(
             value = postalCode,
-            onTextFieldChange = { viewModel.onEvent(RegisterFormEvent.PostalCodeChanged(it)) },
+            onTextFieldChange = { viewModel.onEvent(RegisterFormEvent.PostalCodeChanged(it), context) },
             painterResource = painterResource(id = R.drawable.signpost),
             keyboardType = KeyboardType.Number,
             placeholder = "Código Postal",
@@ -180,7 +180,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
         Spacer(modifier = Modifier.height(10.dp))
         TextFieldGeneric(
             value = electorKey,
-            onTextFieldChange = { viewModel.onEvent(RegisterFormEvent.ElectorKeyChanged(it)) },
+            onTextFieldChange = { viewModel.onEvent(RegisterFormEvent.ElectorKeyChanged(it), context) },
             painterResource = painterResource(id = R.drawable.key),
             keyboardType = KeyboardType.Text,
             placeholder = "Clave de elector",
@@ -191,7 +191,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
         Spacer(modifier = Modifier.height(10.dp))
         TextFieldGeneric(
             value = curp,
-            onTextFieldChange = { viewModel.onEvent(RegisterFormEvent.CurpChanged(it)) },
+            onTextFieldChange = { viewModel.onEvent(RegisterFormEvent.CurpChanged(it), context) },
             painterResource = painterResource(id = R.drawable.key),
             keyboardType = KeyboardType.Text,
             placeholder = "CURP",
@@ -228,7 +228,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
             ) {
                 scope.launch {
                     try {
-                        viewModel.onEvent(RegisterFormEvent.Submit)
+                        viewModel.onEvent(RegisterFormEvent.Submit, context)
                     } catch (e: Exception) {
                         Log.e("UserCreation", "Error creating user", e)
                     }

@@ -1,5 +1,6 @@
 package mx.edu.utttt.loginfire.screen
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -112,7 +113,7 @@ class RegisterViewModel(
     val birthdateError: LiveData<String?> = _birthdateError
 
     // Función para validar todos los campos
-    fun onEvent(event: RegisterFormEvent) {
+    fun onEvent(event: RegisterFormEvent, context: Context) {
         when (event) {
             is RegisterFormEvent.EmailChanged -> {
                 _email.value = event.email
@@ -154,12 +155,12 @@ class RegisterViewModel(
                 _birthdate.value = event.birthdate
             }
             is RegisterFormEvent.Submit -> {
-                validateAllFields()
+                validateAllFields(context)
             }
         }
     }
 
-    private fun validateAllFields() {
+    private fun validateAllFields(context: Context) {
         val emailResult = validations.validateEmail(_email.value ?: "")
         val passwordResult = validations.validateStrongPassword(_password.value ?: "")
         val repeatedPasswordResult = validations.validateRepeatedPassword(_password.value ?: "", _repeatedPassword.value ?: "")
@@ -221,7 +222,8 @@ class RegisterViewModel(
                     _electorKey.value ?: "",
                     _curp.value ?: "",
                     strBrithdate ?: "",
-                    navController
+                    navController,
+                    context
                 )
             } catch (e: Exception) {
                 Log.e("UserLogin", "Error en el inicio de sesion", e)

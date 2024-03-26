@@ -39,7 +39,8 @@ import mx.edu.utttt.loginfire.model.UserRepository
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
-    Box(modifier = Modifier
+    Box(
+        modifier = Modifier
         .fillMaxSize()
         .padding(16.dp)
     ){
@@ -56,13 +57,14 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavContr
     val passwordError: String? by viewModel.passwordError.observeAsState()
     //Importante
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     Column(
         modifier = modifier
     ) {
         TextFieldGeneric(
             value = email,
-            onTextFieldChange = { viewModel.onEvent(LoginFormEvent.EmailChanged(it)) },
+            onTextFieldChange = { viewModel.onEvent(LoginFormEvent.EmailChanged(it), context) },
             painterResource = painterResource(id = drawable.email),
             keyboardType = KeyboardType.Email,
             placeholder = "Email",
@@ -73,7 +75,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavContr
         Spacer(modifier = Modifier.height(10.dp))
         PasswordTextField(
             value = password,
-            onTextFieldChange = { viewModel.onEvent(LoginFormEvent.PasswordChanged(it)) },
+            onTextFieldChange = { viewModel.onEvent(LoginFormEvent.PasswordChanged(it), context) },
             painterResource = painterResource(id = drawable.lock),
             keyboardType = KeyboardType.Password,
             placeholder = "Contraseña",
@@ -101,7 +103,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavContr
             ) {
                 try {
                     scope.launch {
-                        viewModel.onEvent(LoginFormEvent.Submit)
+                        viewModel.onEvent(LoginFormEvent.Submit, context)
                     }
                 } catch (e: Exception) {
                     Log.e("UserLogin", "Error en el inicio de sesion", e)

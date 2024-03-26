@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import mx.edu.utttt.loginfire.R.*
 
 @SuppressLint("PrivateResource")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TextFieldGeneric(
     value: String,
