@@ -18,6 +18,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,24 +37,31 @@ import mx.edu.utttt.loginfire.components.SexDropdown
 import mx.edu.utttt.loginfire.components.TextFieldGeneric
 import mx.edu.utttt.loginfire.model.UserRepository
 import java.time.LocalDate
+import mx.edu.utttt.loginfire.components.TitleRegistro
+
 
 @Composable
 fun RegisterScreen(viewModel: RegisterViewModel, navController: NavController) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp)
-    ){
-        LazyColumn {
-            item{
-                Register(Modifier.align(Alignment.Center), viewModel, navController, UserRepository())
+    Box(modifier = Modifier.fillMaxSize()) {
+        ImageWithBackground(
+            backgroundResourceId = R.drawable.register, // Reemplaza "your_background_image" con el ID de tu imagen de fondo
+            content = {
+                LazyColumn {
+                    item {
+                        TitleRegistro()
+                        Register(Modifier.align(Alignment.Center), viewModel, navController, UserRepository())
+                    }
+                }
             }
-        }
+        )
     }
 }
 
 @Composable
 fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: NavController, register: UserRepository) {
     // Variables ViewModel
+
+
     val email: String by viewModel.email.observeAsState(initial = "")
     val password: String by viewModel.password.observeAsState(initial = "")
     val repeatedPassword: String by viewModel.repeatedPassword.observeAsState(initial = "")
@@ -86,7 +94,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
     val context = LocalContext.current
 
     Column(
-        modifier = modifier
+        modifier = modifier.padding(16.dp)
     ) {
         //Email
         TextFieldGeneric(

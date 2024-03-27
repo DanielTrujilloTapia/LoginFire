@@ -1,6 +1,7 @@
 package mx.edu.utttt.loginfire.components
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -45,6 +46,7 @@ fun TextFieldGeneric(
 ){
     OutlinedTextField(
         value = value,
+        shape = RoundedCornerShape(38),
         onValueChange = { onTextFieldChange(it) },
         modifier = Modifier.fillMaxWidth(),
         placeholder = { Text(text = placeholder) },
@@ -59,6 +61,7 @@ fun TextFieldGeneric(
         },
         visualTransformation = visualTransformation,
         isError = errorMessage!= null,
+
     )
     if (errorMessage != null) {
         Text(
@@ -138,6 +141,7 @@ fun PasswordTextField(
 
     OutlinedTextField(
         value = value,
+        shape = RoundedCornerShape(38),
         onValueChange = {onTextFieldChange(it)},
         modifier = Modifier.fillMaxWidth(),
         placeholder = { Text(text = placeholder)},

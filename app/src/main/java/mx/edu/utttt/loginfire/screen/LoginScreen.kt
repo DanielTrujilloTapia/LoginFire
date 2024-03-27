@@ -2,6 +2,7 @@ package mx.edu.utttt.loginfire.screen
 
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -30,23 +32,56 @@ import androidx.navigation.NavController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import mx.edu.utttt.loginfire.R
 import mx.edu.utttt.loginfire.components.GenericOutlinedButton
 import mx.edu.utttt.loginfire.R.*
 import mx.edu.utttt.loginfire.components.GenericButton
 import mx.edu.utttt.loginfire.components.PasswordTextField
 import mx.edu.utttt.loginfire.components.TextFieldGeneric
-import mx.edu.utttt.loginfire.model.UserRepository
+import mx.edu.utttt.loginfire.components.TitleLogin
+
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
+import mx.edu.utttt.loginfire.components.CircularProfileImage
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel, navController: NavController) {
-    Box(
-        modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp)
-    ){
-        Login(Modifier.align(Alignment.Center), viewModel = viewModel, navController)
+    Box(modifier = Modifier.fillMaxSize()) {
+        ImageWithBackground(
+            backgroundResourceId = R.drawable.fon_minima,
+            content = {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
+                ) {
+                    Login(Modifier.align(Alignment.Center), viewModel = viewModel, navController)
+                }
+            }
+        )
     }
 }
+
+@Composable
+fun ImageWithBackground(
+    backgroundResourceId: Int,
+    content: @Composable () -> Unit
+) {
+    val painter: Painter = painterResource(id = backgroundResourceId)
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Image(
+            painter = painter,
+            contentDescription = null,
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier.fillMaxSize()
+        )
+        content()
+    }
+}
+
+
 
 @Composable
 fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavController) {
@@ -62,6 +97,8 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel, navController: NavContr
     Column(
         modifier = modifier
     ) {
+        CircularProfileImage(imageResId = R.drawable.foto_user, modifier = Modifier.align(Alignment.CenterHorizontally)) // Reemplaza "your_profile_image_resource" con el ID de tu imagen de perfil
+        TitleLogin()
         TextFieldGeneric(
             value = email,
             onTextFieldChange = { viewModel.onEvent(LoginFormEvent.EmailChanged(it), context) },

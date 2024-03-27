@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.ui.Alignment.Horizontal
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -57,6 +59,7 @@ import java.time.format.DateTimeFormatter
 import mx.edu.utttt.loginfire.R.*
 import mx.edu.utttt.loginfire.screen.RegisterViewModel
 
+
 @Composable
 fun DatePickerField(
     birthdate: LocalDate,
@@ -73,6 +76,7 @@ fun DatePickerField(
     ) {
         OutlinedTextField(
             value = birthdateStr.value,
+            shape = RoundedCornerShape(38),
             onValueChange = { },
             readOnly = true,
             placeholder = { Text("Fecha de nacimiento") },
@@ -94,7 +98,7 @@ fun DatePickerField(
             modifier = Modifier
                 .size(48.dp)
                 .clip(CircleShape)
-                .background(Color.LightGray)
+                .background(Color.White)
         ) {
             Icon(painter = painterResource(id = R.drawable.calendar), contentDescription = "")
         }
@@ -133,6 +137,7 @@ fun SexDropdown(
     Row(horizontalArrangement = Arrangement.SpaceEvenly) {
         OutlinedTextField(
             value = if (selectedOption.isEmpty()) "Selecciona el sexo" else selectedOption,
+            shape = RoundedCornerShape(38),
             onValueChange = { },
             readOnly = true,
             placeholder = { Text("Sexo") },
@@ -209,18 +214,14 @@ fun CheckBoxComponent(value: String, checked: Boolean, errorMessage: String? = n
 
 @Composable
 fun ClickableTextComponent(value: String, onTextSelected: (String) -> Unit){
-    val inicialText = "Para continuar debes aceptar"
-    val privacidadPoliticaText = "Terminos y Politicas de privacidad"
-    val yText = " y "
-    val terminosCondicionesText = "Terminos de Uso"
+    val privacidadPoliticaText = "Para continuar debes aceptar Terminos y Politicas de privacidad"
+    val terminosCondicionesText = " y Terminos de Uso"
 
     val anotacionString = buildAnnotatedString {
-        append(inicialText)
         withStyle(style = SpanStyle(color = Color.Blue)){
             pushStringAnnotation(tag = privacidadPoliticaText, annotation = privacidadPoliticaText)
             append(privacidadPoliticaText)
         }
-        append(yText)
         withStyle(style = SpanStyle(color = Color.Blue)){
             pushStringAnnotation(tag = terminosCondicionesText, annotation = terminosCondicionesText)
             append(terminosCondicionesText)
@@ -236,4 +237,16 @@ fun ClickableTextComponent(value: String, onTextSelected: (String) -> Unit){
                 }
             }
     })
+}
+
+@Composable
+fun TitleRegistro() {
+    Text(
+        text = "Registrar Usuario INE",
+        style = MaterialTheme.typography.titleLarge,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 20.dp, start = 80.dp, top = 30.dp)
+
+    )
 }
